@@ -1,0 +1,29 @@
+{
+  "name": "xh_clinton_obfuscator_bot",
+  "version": "1.0.0",
+  "description": "A Telegram bot by xh_clinton for advanced JavaScript and document obfuscation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "javascript",
+    "document",
+    "obfuscation",
+    "xh_clinton"
+  ],
+  "author": "xh_clinton",
+  "license": "ISC",
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.0",
+    "js-beautify": "^1.15.1",
+    "node-fetch": "^3.3.2",
+    "telegraf": "^4.16.3"
+  },
+  "engines": {
+    "node": ">=21.7.3"
+  }
+}
