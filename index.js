@@ -7,7 +7,7 @@ const beautify = require('js-beautify').js;
 const crypto = require('crypto');
 
 // Bot token
-const BOT_TOKEN = '7744703463:AAF0vasBkkkVr8ogRC2SXQs4PyBqZeo5vAw';
+const BOT_TOKEN = '8321798322:AAFUs9InmTOXz__8i8n5S4eRsDbTy-TJksc';
 const bot = new Telegraf(BOT_TOKEN);
 const logoUrl = 'https://files.catbox.moe/0e8nu3.jpg';
 const SECRET_KEY = crypto.createHash('sha256').update('xh_clintonダ_secret').digest();
