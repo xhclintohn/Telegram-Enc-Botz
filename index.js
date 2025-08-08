@@ -20,7 +20,7 @@ console.log('🚀 xh_clinton ダ Obfuscator Bot starting...');
 console.log('📅', new Date().toLocaleString());
 console.log('🔗 Follow developer: https://github.com/xhclintohn');
 console.log('📧 Telegram: @xhclintonn');
-
+console.log('fetch type:', typeof fetch); // Debug fetch
 
 function formatMessage(text) {
     return `◈━━━━━━━━━━━━━━━━◈\n${text}\n◈━━━━━━━━━━━━━━━━◈`;
@@ -42,7 +42,7 @@ async function showLoading(ctx, message, duration = 2000) {
     ];
     let frameIndex = 0;
     const loadingMsg = await ctx.reply(formatMessage(`${message} ${frames[0]}`));
-    
+
     const interval = setInterval(async () => {
         frameIndex = (frameIndex + 1) % frames.length;
         try {
@@ -56,7 +56,7 @@ async function showLoading(ctx, message, duration = 2000) {
             clearInterval(interval);
         }
     }, 200);
-    
+
     return {
         message: loadingMsg,
         stop: async () => {
@@ -87,23 +87,23 @@ function obfuscateCode(content) {
         transformObjectKeys: true,
         seed: 'xh_clintonダ'
     };
-    
+
     const obfuscated = JavaScriptObfuscator.obfuscate(content, obfuscationOptions);
     let code = obfuscated.getObfuscatedCode();
     const lines = code.split('\n');
     let finalCode = `// Secured by xh_clintonダ\n`;
     finalCode += `// xh_clintonダ Protection Layer\n`;
-    
+
     lines.forEach((line, index) => {
         finalCode += line + '\n';
         if (index % 2 === 0) {
             finalCode += `// xh_clintonダ Security Mark ${index}\n`;
         }
         if (index % 4 === 0) {
-            finalCode += `var xh_clintonダxh_clintonダ_${index} = "deadcode"; // xh_clintonダ\n`;
+            finalCode += `var xh_clianzaxh_clintonダ_${index} = "deadcode"; // xh_clintonダ\n`;
         }
     });
-    
+
     finalCode += `// xh_clintonダ Obfuscation Complete\n`;
     finalCode += `// Protected by xh_clintonダ - ${new Date().toLocaleString()}\n`;
     return finalCode;
@@ -115,13 +115,13 @@ function deobfuscateCode(content) {
     cleanedCode = cleanedCode.replace(/var xh_clintonダxh_clintonダ_\d+ = "deadcode";.*\n/g, '');
     cleanedCode = cleanedCode.replace(/xh_clintonダxh_clintonダ_/g, '_v');
     cleanedCode = cleanedCode.replace(/\\x([0-9A-Fa-f]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16)));
-    
+
     const beautifiedCode = beautify(cleanedCode, {
         indent_size: 2,
         space_in_paren: true,
         jslint_happy: true
     });
-    
+
     return `// Deobfuscated by xh_clintonダ\n${beautifiedCode}\n// Deobfuscation by xh_clintonダ - ${new Date().toLocaleString()}`;
 }
 
@@ -131,10 +131,10 @@ function obfuscateDocument(buffer, filename) {
     const key = crypto.pbkdf2Sync(SECRET_KEY, salt, 100000, 32, 'sha256');
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
-    
+
     let encrypted = cipher.update(buffer);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
-    
+
     const output = Buffer.concat([
         Buffer.from('xh_clintonダ_ENCDOC_'),
         salt,
@@ -142,7 +142,7 @@ function obfuscateDocument(buffer, filename) {
         Buffer.from(filename + '||'),
         encrypted
     ]);
-    
+
     return output;
 }
 
@@ -151,20 +151,20 @@ function deobfuscateDocument(buffer) {
     if (!buffer.toString().startsWith('xh_clintonダ_ENCDOC_')) {
         throw new Error('Not a valid xh_clintonダ obfuscated document');
     }
-    
+
     const markerLength = 'xh_clintonダ_ENCDOC_'.length;
     const salt = buffer.slice(markerLength, markerLength + 16);
     const iv = buffer.slice(markerLength + 16, markerLength + 32);
     const filenameEnd = buffer.indexOf('||', markerLength + 32);
     const filename = buffer.slice(markerLength + 32, filenameEnd).toString();
     const encrypted = buffer.slice(filenameEnd + 2);
-    
+
     const key = crypto.pbkdf2Sync(SECRET_KEY, salt, 100000, 32, 'sha256');
     const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-    
+
     let decrypted = decipher.update(encrypted);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
-    
+
     return { decrypted, filename };
 }
 
@@ -208,11 +208,11 @@ bot.on('document', async (ctx) => {
     const fileName = file.file_name.toLowerCase();
     const isJs = fileName.endsWith('.js');
     const isDoc = SUPPORTED_DOC_EXTENSIONS.some(ext => fileName.endsWith(ext));
-    
+
     if (!isJs && !isDoc) {
         return ctx.reply(formatMessage('❌ Please provide a JavaScript file (.js) or a word document (.doc, .docx, .odt, .rtf, .txt, etc.).'));
     }
-    
+
     await ctx.reply(
         formatMessage(`✅ ${isJs ? 'JavaScript' : 'Document'} file received! Select an action:`),
         Markup.inlineKeyboard([
@@ -229,18 +229,19 @@ bot.action(['obfuscate_js', 'deobfuscate_js', 'obfuscate_doc', 'deobfuscate_doc'
     if (!message || !message.document) {
         return ctx.reply(formatMessage('❌ No document found to process.'));
     }
-    
+
     const file = message.document;
     const fileName = file.file_name.toLowerCase();
-    
+
     try {
         const loading = await showLoading(ctx, `Processing xh_clintonダ (${action.includes('obfuscate') ? 'Obfuscating' : 'Deobfuscating'})`);
         const fileLink = await ctx.telegram.getFileLink(file.file_id);
         const response = await fetch(fileLink);
-        const buffer = await response.buffer();
-        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
         let outputFilename, outputContent;
-        
+
         if (action === 'obfuscate_js' && fileName.endsWith('.js')) {
             const fileContent = buffer.toString();
             outputContent = obfuscateCode(fileContent);
@@ -260,9 +261,9 @@ bot.action(['obfuscate_js', 'deobfuscate_js', 'obfuscate_doc', 'deobfuscate_doc'
             loading.stop();
             return ctx.reply(formatMessage('❌ Invalid file type for this action.'));
         }
-        
+
         fs.writeFileSync(outputFilename, outputContent);
-        
+
         loading.stop();
         await ctx.replyWithDocument({
             source: fs.createReadStream(outputFilename),
@@ -270,7 +271,7 @@ bot.action(['obfuscate_js', 'deobfuscate_js', 'obfuscate_doc', 'deobfuscate_doc'
         }, {
             caption: formatMessage(`✅ ${action.includes('obfuscate') ? 'Obfuscation' : 'Deobfuscation'} done! 🔹 Secured by xh_clintonダ`)
         });
-        
+
         fs.unlinkSync(outputFilename);
     } catch (error) {
         console.error('Error:', error);
@@ -284,23 +285,23 @@ bot.command(['enc', 'encrypt'], async (ctx) => {
     if (!ctx.message.reply_to_message || !ctx.message.reply_to_message.document) {
         return ctx.reply(formatMessage('❌ Reply to a .js file with /enc or /encrypt to obfuscate.'));
     }
-    
+
     const file = ctx.message.reply_to_message.document;
     if (!file.file_name.toLowerCase().endsWith('.js')) {
         return ctx.reply(formatMessage('❌ Replied file must be a .js file.'));
     }
-    
+
     try {
         const loading = await showLoading(ctx, 'Obfuscating xh_clintonダ');
         const fileLink = await ctx.telegram.getFileLink(file.file_id);
         const response = await fetch(fileLink);
         const fileContent = await response.text();
-        
+
         const obfuscatedCode = obfuscateCode(fileContent);
         const outputFilename = `obfuscated_${file.file_name}`;
-        
+
         fs.writeFileSync(outputFilename, obfuscatedCode);
-        
+
         loading.stop();
         await ctx.replyWithDocument({
             source: fs.createReadStream(outputFilename),
@@ -308,7 +309,7 @@ bot.command(['enc', 'encrypt'], async (ctx) => {
         }, {
             caption: formatMessage('✅ Obfuscation done! 🔹 Secured by xh_clintonダ')
         });
-        
+
         fs.unlinkSync(outputFilename);
     } catch (error) {
         console.error('Error:', error);
@@ -321,23 +322,23 @@ bot.command(['dec', 'decrypt'], async (ctx) => {
     if (!ctx.message.reply_to_message || !ctx.message.reply_to_message.document) {
         return ctx.reply(formatMessage('❌ Reply to a .js file with /dec or /decrypt to deobfuscate.'));
     }
-    
+
     const file = ctx.message.reply_to_message.document;
     if (!file.file_name.toLowerCase().endsWith('.js')) {
         return ctx.reply(formatMessage('❌ Replied file must be a .js file.'));
     }
-    
+
     try {
         const loading = await showLoading(ctx, 'Deobfuscating xh_clintonダ');
         const fileLink = await ctx.telegram.getFileLink(file.file_id);
         const response = await fetch(fileLink);
         const fileContent = await response.text();
-        
+
         const deobfuscatedCode = deobfuscateCode(fileContent);
         const outputFilename = `deobfuscated_${file.file_name}`;
-        
+
         fs.writeFileSync(outputFilename, deobfuscatedCode);
-        
+
         loading.stop();
         await ctx.replyWithDocument({
             source: fs.createReadStream(outputFilename),
@@ -345,7 +346,7 @@ bot.command(['dec', 'decrypt'], async (ctx) => {
         }, {
             caption: formatMessage('✅ Deobfuscation done! 🔹 Processed by xh_clintonダ')
         });
-        
+
         fs.unlinkSync(outputFilename);
     } catch (error) {
         console.error('Error:', error);
@@ -358,24 +359,25 @@ bot.command(['encdoc', 'encryptdoc'], async (ctx) => {
     if (!ctx.message.reply_to_message || !ctx.message.reply_to_message.document) {
         return ctx.reply(formatMessage('❌ Reply to a word document with /encdoc or /encryptdoc to obfuscate.'));
     }
-    
+
     const file = ctx.message.reply_to_message.document;
     const fileName = file.file_name.toLowerCase();
     if (!SUPPORTED_DOC_EXTENSIONS.some(ext => fileName.endsWith(ext))) {
         return ctx.reply(formatMessage('❌ Replied file must be a word document (.doc, .docx, .odt, .rtf, .txt, etc.).'));
     }
-    
+
     try {
         const loading = await showLoading(ctx, 'Obfuscating xh_clintonダ Document');
         const fileLink = await ctx.telegram.getFileLink(file.file_id);
         const response = await fetch(fileLink);
-        const buffer = await response.buffer();
-        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
         const obfuscatedContent = obfuscateDocument(buffer, file.file_name);
         const outputFilename = `obfuscated_${file.file_name}.bin`;
-        
+
         fs.writeFileSync(outputFilename, obfuscatedContent);
-        
+
         loading.stop();
         await ctx.replyWithDocument({
             source: fs.createReadStream(outputFilename),
@@ -383,7 +385,7 @@ bot.command(['encdoc', 'encryptdoc'], async (ctx) => {
         }, {
             caption: formatMessage('✅ Document obfuscation done! 🔹 Secured by xh_clintonダ')
         });
-        
+
         fs.unlinkSync(outputFilename);
     } catch (error) {
         console.error('Error:', error);
@@ -396,23 +398,24 @@ bot.command(['decdoc', 'decryptdoc'], async (ctx) => {
     if (!ctx.message.reply_to_message || !ctx.message.reply_to_message.document) {
         return ctx.reply(formatMessage('❌ Reply to a .bin file with /decdoc or /decryptdoc to deobfuscate.'));
     }
-    
+
     const file = ctx.message.reply_to_message.document;
     if (!file.file_name.toLowerCase().endsWith('.bin')) {
         return ctx.reply(formatMessage('❌ Replied file must be a .bin file.'));
     }
-    
+
     try {
         const loading = await showLoading(ctx, 'Deobfuscating xh_clintonダ Document');
         const fileLink = await ctx.telegram.getFileLink(file.file_id);
         const response = await fetch(fileLink);
-        const buffer = await response.buffer();
-        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
         const { decrypted, filename } = deobfuscateDocument(buffer);
         const outputFilename = `deobfuscated_${filename}`;
-        
+
         fs.writeFileSync(outputFilename, decrypted);
-        
+
         loading.stop();
         await ctx.replyWithDocument({
             source: fs.createReadStream(outputFilename),
@@ -420,7 +423,7 @@ bot.command(['decdoc', 'decryptdoc'], async (ctx) => {
         }, {
             caption: formatMessage('✅ Document deobfuscation done! 🔹 Processed by xh_clintonダ')
         });
-        
+
         fs.unlinkSync(outputFilename);
     } catch (error) {
         console.error('Error:', error);
