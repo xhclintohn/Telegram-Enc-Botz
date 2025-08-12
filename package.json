@@ -1,7 +1,7 @@
 {
-  "name": "xh_clinton_obfuscator_bot",
+  "name": "xh_clintonbobfuscator bot",
   "version": "1.0.0",
-  "description": "A Telegram bot by xh_clinton for advanced JavaScript and document obfuscation",
+  "description": "A Telegram bot by xh_clinton for advanced JavaScript and document obfuscation beta version",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
