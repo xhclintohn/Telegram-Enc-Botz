@@ -19,7 +19,7 @@ const SUPPORTED_DOC_EXTENSIONS = ['.doc', '.docx', '.odt', '.rtf', '.txt', '.wps
 console.log('🚀 xh_clinton ダ Obfuscator Bot starting...');
 console.log('📅', new Date().toLocaleString());
 console.log('🔗 Follow developer: https://github.com/xhclintohn');
-console.log('📧 Telegram: @xhclintonn');
+console.log('📧 Telegram: @xh_clintonv');
 console.log('fetch type:', typeof fetch); // Debug fetch
 
 function formatMessage(text) {
@@ -171,7 +171,11 @@ function deobfuscateDocument(buffer) {
 // Welcome/Help message
 const welcomeMessage = `
 │❒ *What’s up? Time to make things happen! ⚡*
+
 │❒ Welcome to xh_clintonダ Obfuscator Bot 😼
+
+│❒ Owner @xh_clintonv
+
 │❒ Secure your JavaScript code or word documents with ease!
 
 💾 *Database*: None
